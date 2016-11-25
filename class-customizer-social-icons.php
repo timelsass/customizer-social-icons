@@ -31,6 +31,14 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 				'4x'     => 'fa-4x',
 				'5x'     => 'fa-5x',
 			),
+			'html' => array(
+				'icon' => '<i class="%1$s %2$s %3$s"></i>',
+				'icon-circle' => '<span class="fa-stack %1$s"><i class="fa fa-circle fa-stack-2x"></i><i class="fa %2$s fa-stack-1x fa-inverse %3$s"></i></span>',
+				'icon-circle-open' => '<span class="fa-stack %1$s"><i class="fa fa-circle-o fa-stack-2x"></i><i class="fa %2$s fa-stack-1x %3$s"></i></span>',
+				'icon-circle-open-thin' => '<span class="fa-stack %1$s"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa %2$s fa-stack-1x %3$s"></i></span>',
+				'icon-square' => '<span class="fa-stack %1$s"><i class="fa fa-square fa-stack-2x"></i><i class="fa %2$s fa-stack-1x fa-inverse %3$s"></i></span>',
+				'icon-square-open' => '<span class="fa-stack %1$s"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa %2$s fa-stack-1x %3$s"></i></span>',
+			),
 			'networks' => array(
 				'bitbucket.org' => array(
 					'name' => 'Bitbucket',
@@ -650,48 +658,9 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 
 			$show_text = $this->configs['hide-text'] ? '' : 'visible-text';
 
-			if ( 'icon-circle' === $this->configs['type'] ) {
+			$html = sprintf( $this->configs['html'][ $this->configs['type'] ], $size, $icon, $show_text );
 
-				$html = "<span class='fa-stack $size'>
-							<i class='fa fa-circle fa-stack-2x'></i>
-	  						<i class='fa $icon fa-stack-1x fa-inverse $show_text'></i>
-						</span>";
-
-			} elseif ( 'icon-circle-open' === $this->configs['type'] ) {
-
-				$html = "<span class='fa-stack $size'>
-							<i class='fa fa-circle-o fa-stack-2x'></i>
-								<i class='fa $icon fa-stack-1x $show_text'></i>
-						</span>";
-
-			} elseif ( 'icon-circle-open-thin' === $this->configs['type'] ) {
-
-				$html = "<span class='fa-stack $size'>
-							<i class='fa fa-circle-thin fa-stack-2x'></i>
-								<i class='fa $icon fa-stack-1x $show_text'></i>
-						</span>";
-
-			} elseif ( 'icon-square' === $this->configs['type'] ) {
-
-				$html = "<span class='fa-stack $size'>
-							<i class='fa fa-square fa-stack-2x'></i>
-								<i class='fa $icon fa-stack-1x fa-inverse $show_text'></i>
-						</span>";
-
-			} elseif ( 'icon-square-open' === $this->configs['type'] ) {
-
-				$html = "<span class='fa-stack $size'>
-							<i class='fa fa-square-o fa-stack-2x'></i>
-								<i class='fa $icon fa-stack-1x $show_text'></i>
-						</span>";
-
-			} else {
-
-				$html = "<i class='$size $icon $show_text'></i>";
-
-			}
-
-			return apply_filters( 'customizer_social_icons_html', $html, $size, $icon, $show_text );
+			return $html;
 		}
 
 		/**
