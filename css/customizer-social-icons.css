@@ -1,0 +1,3 @@
+li.menu-social:after {
+    content: "" !important;
+}
