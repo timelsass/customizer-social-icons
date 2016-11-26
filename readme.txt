@@ -4,7 +4,7 @@ Donate link: https://paypal.me/timph
 Tags: customizer, social media icons, social icons, social media, social, customize, customize social
 Requires at least: 4.3
 Tested up to: 4.6
-Stable tag: 0.1
+Stable tag: 0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,44 +14,46 @@ Easily change and modify dozens of Social Media networks the native way - in the
 
 Customizer Social Icons aims to bring one of the most implemented features across websites into your WordPress Customizer.  It helps to bridge the gap of not having a native Social Media Icon tool available in WordPress directly, and gives you the features you need without the overhead of a clunky non-native interface.
 
+You can control the style, size, and spacing of your icons to fit your website's needs hassle free inside of the WordPress Customizer.  Any of your social media network urls found in your menus will automatically be transformed into the corresponding social media icons for you.
+
 Available Social Media Icons:
 
-Facebook
-Twitter
-LinkedIn
-Google+
-Bitbucket
-Snapchat
-Gratipay
-Reddit
-Yelp
-Vimeo
-Codepen
-Instagram
-Trello
-YouTube
-Vine
-Dribbble
-JSFiddle
-Tumblr
-SlideShare
-VK
-Dropbox
-Stack Overflow
-Steam
-Email
-Weibo
-Stack Exchange
-Xing
-Flickr
-Pinterest
-WordPress.org
-WordPress.com   
-SoundCloud
-RenRen
-Foursquare
-Stack Exchange
-Github
+* Facebook
+* Twitter
+* LinkedIn
+* Google+
+* Bitbucket
+* Snapchat
+* Gratipay
+* Reddit
+* Yelp
+* Vimeo
+* Codepen
+* Instagram
+* Trello
+* YouTube
+* Vine
+* Dribbble
+* JSFiddle
+* Tumblr
+* SlideShare
+* VK
+* Dropbox
+* Stack Overflow
+* Steam
+* Email
+* Weibo
+* Stack Exchange
+* Xing
+* Flickr
+* Pinterest
+* WordPress.org
+* WordPress.com
+* SoundCloud
+* RenRen
+* Foursquare
+* Stack Exchange
+* Github
 
 == Installation ==
 
@@ -78,7 +80,7 @@ You're ready to go!  Visit the WordPress Customizer, and start adding Social Med
 
 = Q: I don't get it.  What do I do? =
 
-A: Don't worry!  Customizing a site for a new and even experienced user can get complicated and be frustrating.  This plugin utilizes the native WordPress menus system to transform your social media links into social media icons.  To get there follow these steps:
+**A**: Don't worry!  Customizing a site for a new and even experienced user can get complicated and be frustrating.  This plugin utilizes the native WordPress menus system to transform your social media links into social media icons.  To get there follow these steps:
 
 1. Click on "Customize" to get to the WordPress Customizer.
 2. Click on the tab that says "Menus".
@@ -88,6 +90,7 @@ A: Don't worry!  Customizing a site for a new and even experienced user can get 
 6. Select the tab that says "Social Media Icons."
 7. Choose the social media icon that you want to add to your menu.
 8. The item is added to your menu, and will have the URL filled out with the social network's website as a placeholder to add your username into.
+9. Now you that you've added some social icons to your menu, you can modify the appearance of the icons in the "Social Icons" section in the customizer!
 
 = Q: Can I add/remove social media icons for social network x, y, z? =
 
@@ -102,8 +105,16 @@ A: Don't worry!  Customizing a site for a new and even experienced user can get 
 
 1. **Add Social Media Icon** - Customizer Social Icons adds a new menu item type to the Customizer's "Menus".  Each item displays it's icon for a quicker reference of the social media icons.
 2. **Easily Find Networks** - The social media networks that are added are all built to be searchable within the Customizer's "Add Items" > "Search menu items..." quick search.
+3. **Social Icons Section** - The "Social Icons" section will be added to your customizer, which contains some settings you can modify to adjust the appearance of your social icons on your website.
+4. **Social Icon Appearance Controls** - You can manage how your social media icons appear in your website with the customizer controls.
+5. **Social Icon Styles** - Various Icon Styles are available to make the icons fit better with your overall design.
+6. **Social Icon Sizes** - You can change the size of your social icons right in the customizer to give a different look to your chosen icons.
 
 == Changelog ==
+
+= 0.2 =
+* Cleaning up extraneous filters.  All filters should be handled by the single config filter now.
+* Added customizer controls for icon's style, size, spacing, and whether or not to hide text.
 
 = 0.1 =
 * Initial commit.

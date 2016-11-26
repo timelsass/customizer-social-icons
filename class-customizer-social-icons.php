@@ -6,6 +6,7 @@
  */
 
 if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
+
 	/**
 	 * Class Customizer_Social_Icons.
 	 */
@@ -608,6 +609,7 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 			add_action( 'customize_controls_enqueue_scripts', array( $this, 'add_fa_styles' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
 			add_action( 'customize_preview_init', array( $this, 'live_preview' ) );
+			add_action( 'wp_head', array( $this, 'icon_spacing_css' ) );
 		}
 
 		/**
@@ -671,99 +673,206 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 		}
 
 		/**
+		 * Generates the CSS that will be inlined to wp_head.
+		 *
+		 * @since 0.2
+		 * @access public
+		 *
+		 * @return null No return for this method.
+		 */
+		public function icon_spacing_css() {
+			$option = get_option( 'customizer_social_icons_spacing_setting', 0 );
+			$val = ( $option / 2 ) . 'px';
+			$css = '<style type="text/css" id="icon-spacing-css">';
+			$css .=
+			".menu-social a>i.fa,
+			.menu-social span.fa-stack {
+				margin-right: {$val};
+				margin-left: {$val};
+			}
+			.menu-social:first-child a>i.fa,
+			.menu-social:first-child span.fa-stack {
+				margin-right: {$val};
+				margin-left: 0;
+			}
+			.menu-social:last-child a>i.fa,
+			.menu-social:last-child span.fa-stack {
+				margin-right: 0;
+				margin-left: {$val};
+			}";
+			$css .= '</style>';
+
+			echo $css;
+		}
+
+		/**
 		 * Adds the controls and sections to WordPress Customizer.
 		 *
-		 * @since 0.1
+		 * @since 0.2
 		 * @access public
 		 *
 		 * @return null No return for this method.
 		 */
 		public function add_controls( $wp_customize ) {
-			$i18n = $this->configs['i18n'];
+			self::social_icons_section( $wp_customize );
+			self::icon_style( $wp_customize );
+			self::icon_size( $wp_customize );
+			self::icon_spacing( $wp_customize );
+			self::icon_hide_text( $wp_customize );
+		}
+
+		/**
+		 * Adds the 'Social Icons' section to the WordPress Customizer.
+		 *
+		 * @since 0.2
+		 * @access private
+		 *
+		 * @return null No return for this method.
+		 */
+		private function social_icons_section( $wp_customize ) {
 			// Adds "Social Icons" to the customizer options.
 			$wp_customize->add_section( 'customizer_social_icons_section', array(
 				'title'          => 'Social Icons',
 				'priority'       => 35,
 			) );
+		}
 
-			/**
-			 * Icon Style
-			 */
-			$wp_customize->add_setting( 'customizer_social_icons_type_setting', array(
-				'default'  => $this->configs['type'],
-				'type'      => 'option',
-				'transport' => 'refresh',
-			) );
-			$wp_customize->add_control( 'customizer_social_icons_type', array(
-				'label'   => 'Style',
-				'section' => 'customizer_social_icons_section',
-				'settings'   => 'customizer_social_icons_type_setting',
-				'priority' => 10,
-				'type' => 'select',
-				'choices'  => array(
-					'icon'                  => __( $i18n['icon'] ),
-					'icon-circle-open'      => $i18n['icon-circle-open'],
-					'icon-circle-open-thin' => $i18n['icon-circle-open-thin'],
-					'icon-circle'           => $i18n['icon-circle'],
-					'icon-square-open'      => $i18n['icon-square-open'],
-					'icon-square'           => $i18n['icon-square'],
-			) ) );
+		/**
+		 * Icon Style Control
+		 *
+		 * @since 0.2
+		 * @access private
+		 *
+		 * @return null No return for this method.
+		 */
+		private function icon_style( $wp_customize ) {
+			// Get text from configs.
+			$i18n = $this->configs['i18n'];
 
-			/**
-			 * Icon Size
-			 */
-			$wp_customize->add_setting( 'customizer_social_icons_size_setting', array(
-				'default'  => self::get_icon_size(),
-				'type'      => 'option',
-				'transport' => 'postMessage',
-			) );
-			$wp_customize->add_control( 'customizer_social_icons_size', array(
-				'type' => 'range',
-				'section' => 'customizer_social_icons_section',
-				'label' => __( 'Size' ),
-				'settings'   => 'customizer_social_icons_size_setting',
-				'priority' => 20,
-				'input_attrs' => array(
-					'min' => 1,
-					'max' => 6,
-					'step' => 1,
-			) ) );
+			$wp_customize->add_setting(
+				'customizer_social_icons_type_setting',
+				array(
+					'default'  => $this->configs['type'],
+					'type'      => 'option',
+					'transport' => 'refresh',
+				)
+			);
+			$wp_customize->add_control(
+				'customizer_social_icons_type',
+				array(
+					'label'   => 'Style',
+					'section' => 'customizer_social_icons_section',
+					'settings'   => 'customizer_social_icons_type_setting',
+					'priority' => 10,
+					'type' => 'select',
+					'choices'  => array(
+						'icon'                  => __( $i18n['icon'] ),
+						'icon-circle-open'      => $i18n['icon-circle-open'],
+						'icon-circle-open-thin' => $i18n['icon-circle-open-thin'],
+						'icon-circle'           => $i18n['icon-circle'],
+						'icon-square-open'      => $i18n['icon-square-open'],
+						'icon-square'           => $i18n['icon-square'],
+					)
+				)
+			);
+		}
 
-			/**
-			 * Icon Spacing
-			 */
-			$wp_customize->add_setting( 'customizer_social_icons_spacing_setting', array(
-				'default'  => 0,
-				'type'      => 'option',
-				'transport' => 'postMessage',
-			) );
-			$wp_customize->add_control( 'customizer_social_icons_spacing', array(
-				'type' => 'range',
-				'section' => 'customizer_social_icons_section',
-				'label' => __( 'Spacing' ),
-				'settings'   => 'customizer_social_icons_spacing_setting',
-				'priority' => 30,
-				'input_attrs' => array(
-					'min' => -25,
-					'max' => 45,
-					'step' => 1,
-			) ) );
+		/**
+		 * Icon Size Control.
+		 *
+		 * @since 0.2
+		 * @access public
+		 *
+		 * @return null No return for this method.
+		 */
+		private function icon_size( $wp_customize ) {
+			$wp_customize->add_setting(
+				'customizer_social_icons_size_setting',
+				array(
+					'default'  => self::get_icon_size(),
+					'type'      => 'option',
+					'transport' => 'postMessage',
+				)
+			);
+			$wp_customize->add_control(
+				'customizer_social_icons_size',
+				array(
+					'type' => 'range',
+					'section' => 'customizer_social_icons_section',
+					'label' => __( 'Size' ),
+					'settings'   => 'customizer_social_icons_size_setting',
+					'priority' => 20,
+					'input_attrs' => array(
+						'min' => 1,
+						'max' => 6,
+						'step' => 1,
+					)
+				)
+			);
+		}
 
-			/**
-			 * Hide Icon Text
-			 */
-			$wp_customize->add_setting( 'customizer_social_icons_hide_text_setting', array(
-				'default'  => false,
-				'type'      => 'option',
-				'transport' => 'postMessage',
-			) );
-			$wp_customize->add_control( 'customizer_social_icons_hide_text', array(
-				'type' => 'checkbox',
-				'section' => 'customizer_social_icons_section',
-				'label' => __( 'Hide Text?' ),
-				'settings'   => 'customizer_social_icons_hide_text_setting',
-				'priority' => 40,
-			) );
+
+		/**
+		 * Icon Spacing Control
+		 *
+		 * @since 0.2
+		 * @access public
+		 *
+		 * @return null No return for this method.
+		 */
+		private function icon_spacing( $wp_customize ) {
+			$wp_customize->add_setting(
+				'customizer_social_icons_spacing_setting',
+				array(
+					'default'  => 0,
+					'type'      => 'option',
+					'transport' => 'postMessage',
+				)
+			);
+			$wp_customize->add_control(
+				'customizer_social_icons_spacing',
+				array(
+					'type' => 'range',
+					'section' => 'customizer_social_icons_section',
+					'label' => __( 'Spacing' ),
+					'settings'   => 'customizer_social_icons_spacing_setting',
+					'priority' => 30,
+					'input_attrs' => array(
+						'min' => -25,
+						'max' => 45,
+						'step' => 1,
+					)
+				)
+			);
+		}
+
+		/**
+		 * Hide Icon Text Control.
+		 *
+		 * @since 0.2
+		 * @access private
+		 *
+		 * @return null No return for this method.
+		 */
+		private function icon_hide_text( $wp_customize ) {
+			$wp_customize->add_setting(
+				'customizer_social_icons_hide_text_setting',
+				array(
+					'default'  => false,
+					'type'      => 'option',
+					'transport' => 'postMessage',
+				)
+			);
+			$wp_customize->add_control(
+				'customizer_social_icons_hide_text',
+				array(
+					'type' => 'checkbox',
+					'section' => 'customizer_social_icons_section',
+					'label' => __( 'Hide Text?' ),
+					'settings'   => 'customizer_social_icons_hide_text_setting',
+					'priority' => 40,
+				)
+			);
 		}
 
 		/**
@@ -965,15 +1074,15 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 		}
 
 		/**
-		 * Get Icon Size From Config
+		 * Get Icon Size integer from configs.
 		 *
-		 * @since 1.0.0
+		 * @since 0.2
 		 * @access private
 		 *
 		 * @param    string   $size_theme  Theme Mod to Conver 
-		 * @return   string   $fa_size     Font Awesome size from numerical value.
+		 * @return   integer  $icon_size   Number representing the Font Awesome size class.
 		 */
-		private function get_icon_size( $icon_size_config = null ) {
+		private function get_icon_size() {
 			$icon_size_config = $this->configs['size'];
 			
 			switch ( $icon_size_config ) {
@@ -1005,7 +1114,7 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 		/**
 		 * Get Icon Class returned when provided an integer.
 		 *
-		 * @since 1.0.0
+		 * @since 0,2
 		 * @access private
 		 *
 		 * @param    integer  $icon     The icon size value to convert to string.
