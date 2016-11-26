@@ -19,6 +19,14 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 		 * @access protected
 		 */
 		protected $configs = array(
+			'i18n' => array(
+				'icon' => 'Standard Icon',
+				'icon-circle' => 'Circular Background',
+				'icon-circle-open' => 'Circular Border Thick',
+				'icon-circle-open-thin' => 'Circular Border Thin',
+				'icon-square' => 'Square Background',
+				'icon-square-open' => 'Square Border',
+			),
 			'hide-text'   => true,
 			'size'        => '2x',
 			'type'        => 'icon',
@@ -32,13 +40,16 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 				'5x'     => 'fa-5x',
 			),
 			'html' => array(
-				'icon' => '<i class="%1$s %2$s %3$s"></i>',
-				'icon-circle' => '<span class="fa-stack %1$s"><i class="fa fa-circle fa-stack-2x"></i><i class="fa %2$s fa-stack-1x fa-inverse %3$s"></i></span>',
-				'icon-circle-open' => '<span class="fa-stack %1$s"><i class="fa fa-circle-o fa-stack-2x"></i><i class="fa %2$s fa-stack-1x %3$s"></i></span>',
-				'icon-circle-open-thin' => '<span class="fa-stack %1$s"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa %2$s fa-stack-1x %3$s"></i></span>',
-				'icon-square' => '<span class="fa-stack %1$s"><i class="fa fa-square fa-stack-2x"></i><i class="fa %2$s fa-stack-1x fa-inverse %3$s"></i></span>',
-				'icon-square-open' => '<span class="fa-stack %1$s"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa %2$s fa-stack-1x %3$s"></i></span>',
+				'hide-text' => '<span class="social-network-name screen-reader-text">%1$s</span>',
+				'show-text' => '<span class="social-network-name">%1$s</span>',
+				'icon' => '<i class="%1$s %2$s"></i>',
+				'icon-circle' => '<span class="fa-stack %1$s"><i class="fa fa-circle fa-stack-2x"></i><i class="fa %2$s fa-stack-1x fa-inverse"></i></span>',
+				'icon-circle-open' => '<span class="fa-stack %1$s"><i class="fa fa-circle-o fa-stack-2x"></i><i class="fa %2$s fa-stack-1x"></i></span>',
+				'icon-circle-open-thin' => '<span class="fa-stack %1$s"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa %2$s fa-stack-1x"></i></span>',
+				'icon-square' => '<span class="fa-stack %1$s"><i class="fa fa-square fa-stack-2x"></i><i class="fa %2$s fa-stack-1x fa-inverse"></i></span>',
+				'icon-square-open' => '<span class="fa-stack %1$s"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa %2$s fa-stack-1x"></i></span>',
 			),
+
 			'networks' => array(
 				'bitbucket.org' => array(
 					'name' => 'Bitbucket',
@@ -578,13 +589,14 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 		public function add_hooks() {
 			// Remove current available items type template.
 			add_action( 'customize_register', function( $wp_customize ) {
-	        	remove_action( 'customize_controls_print_footer_scripts', array( $wp_customize->nav_menus, 'print_templates' ) );
-	        }, 10 );
-	        // Add our own custom available items template in.
-	        add_action( 'customize_register', function( $wp_customize ) {
+				remove_action( 'customize_controls_print_footer_scripts', array( $wp_customize->nav_menus, 'print_templates' ) );
+			}, 10 );
+			// Add our own custom available items template in.
+			add_action( 'customize_register', function( $wp_customize ) {
 				add_action( 'customize_controls_print_footer_scripts', array( $this, 'print_templates' ) );
-	        }, 10 );
-	        // Filters navs and replaces menu items with our FA markup.
+			}, 10 );
+			add_action( 'customize_register', array( $this, 'add_controls' ) );
+			// Filters navs and replaces menu items with our FA markup.
 			add_filter( 'wp_nav_menu_objects', array( $this, 'wp_nav_menu_objects' ), 5, 2 );
 			// Add social_media to available items
 			add_filter( 'customize_nav_menu_available_items', array( $this, 'available_items' ), 10, 4 );
@@ -592,9 +604,10 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 			add_filter( 'customize_nav_menu_available_item_types', array( $this, 'available_item_types' ) );
 			// Allow social icons to be searchable in panel.
 			add_filter( 'customize_nav_menu_searched_items', array( $this, 'searched_items' ), 10, 2 );
-			add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_customizer_scripts' ) );
+			add_action( 'customize_controls_enqueue_scripts', array( $this, 'customizer_scripts' ) );
 			add_action( 'customize_controls_enqueue_scripts', array( $this, 'add_fa_styles' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_scripts' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
+			add_action( 'customize_preview_init', array( $this, 'live_preview' ) );
 		}
 
 		/**
@@ -605,7 +618,7 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 		 *
 		 * @return null No return for this method.
 		 */
-		public function enqueue_frontend_scripts() {
+		public function frontend_scripts() {
 			// Base FontAwesome Styles.
 			wp_enqueue_style(
 				'font-awesome',
@@ -630,7 +643,7 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 		 *
 		 * @return null No return for this method.
 		 */
-		public function enqueue_customizer_scripts() {
+		public function customizer_scripts() {
 			// Font Awesome.
 			wp_enqueue_style(
 				'font-awesome',
@@ -638,6 +651,119 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 				array(),
 				'4.5.0'
 			);
+		}
+
+		/**
+		 * Enqueues scripts and styles used in the customizer.
+		 *
+		 * @since 0.1
+		 * @access public
+		 *
+		 * @return null No return for this method.
+		 */
+		public function live_preview() {
+			wp_enqueue_script(
+				'csi-slider',
+				plugins_url( 'assets/js/customizer-social-icons-live-preview.js', __FILE__ ),
+				array( 'jquery', 'customize-preview' ),
+				'1.0.0'
+			);
+		}
+
+		/**
+		 * Adds the controls and sections to WordPress Customizer.
+		 *
+		 * @since 0.1
+		 * @access public
+		 *
+		 * @return null No return for this method.
+		 */
+		public function add_controls( $wp_customize ) {
+			$i18n = $this->configs['i18n'];
+			// Adds "Social Icons" to the customizer options.
+			$wp_customize->add_section( 'customizer_social_icons_section', array(
+				'title'          => 'Social Icons',
+				'priority'       => 35,
+			) );
+
+			/**
+			 * Icon Style
+			 */
+			$wp_customize->add_setting( 'customizer_social_icons_type_setting', array(
+				'default'  => $this->configs['type'],
+				'type'      => 'option',
+				'transport' => 'refresh',
+			) );
+			$wp_customize->add_control( 'customizer_social_icons_type', array(
+				'label'   => 'Style',
+				'section' => 'customizer_social_icons_section',
+				'settings'   => 'customizer_social_icons_type_setting',
+				'priority' => 10,
+				'type' => 'select',
+				'choices'  => array(
+					'icon'                  => __( $i18n['icon'] ),
+					'icon-circle-open'      => $i18n['icon-circle-open'],
+					'icon-circle-open-thin' => $i18n['icon-circle-open-thin'],
+					'icon-circle'           => $i18n['icon-circle'],
+					'icon-square-open'      => $i18n['icon-square-open'],
+					'icon-square'           => $i18n['icon-square'],
+			) ) );
+
+			/**
+			 * Icon Size
+			 */
+			$wp_customize->add_setting( 'customizer_social_icons_size_setting', array(
+				'default'  => self::get_icon_size(),
+				'type'      => 'option',
+				'transport' => 'postMessage',
+			) );
+			$wp_customize->add_control( 'customizer_social_icons_size', array(
+				'type' => 'range',
+				'section' => 'customizer_social_icons_section',
+				'label' => __( 'Size' ),
+				'settings'   => 'customizer_social_icons_size_setting',
+				'priority' => 20,
+				'input_attrs' => array(
+					'min' => 1,
+					'max' => 6,
+					'step' => 1,
+			) ) );
+
+			/**
+			 * Icon Spacing
+			 */
+			$wp_customize->add_setting( 'customizer_social_icons_spacing_setting', array(
+				'default'  => 0,
+				'type'      => 'option',
+				'transport' => 'postMessage',
+			) );
+			$wp_customize->add_control( 'customizer_social_icons_spacing', array(
+				'type' => 'range',
+				'section' => 'customizer_social_icons_section',
+				'label' => __( 'Spacing' ),
+				'settings'   => 'customizer_social_icons_spacing_setting',
+				'priority' => 30,
+				'input_attrs' => array(
+					'min' => -25,
+					'max' => 45,
+					'step' => 1,
+			) ) );
+
+			/**
+			 * Hide Icon Text
+			 */
+			$wp_customize->add_setting( 'customizer_social_icons_hide_text_setting', array(
+				'default'  => false,
+				'type'      => 'option',
+				'transport' => 'postMessage',
+			) );
+			$wp_customize->add_control( 'customizer_social_icons_hide_text', array(
+				'type' => 'checkbox',
+				'section' => 'customizer_social_icons_section',
+				'label' => __( 'Hide Text?' ),
+				'settings'   => 'customizer_social_icons_hide_text_setting',
+				'priority' => 40,
+			) );
 		}
 
 		/**
@@ -649,16 +775,12 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 		 * @param string $network type of icon to retrieve and use.
 		 */
 		public function get_icon( $network ) {
-
 			$icon_sizes = $this->configs['icon-sizes'];
-
-			$size = $icon_sizes[ $this->configs['size'] ];
-
+			$size_option = get_option( 'customizer_social_icons_size_setting', self::get_icon_size() );
+			$size = $icon_sizes[ self::get_icon_class( $size_option ) ];
 			$icon = $network[ $this->configs['type'] ];
-
-			$show_text = $this->configs['hide-text'] ? '' : 'visible-text';
-
-			$html = sprintf( $this->configs['html'][ $this->configs['type'] ], $size, $icon, $show_text );
+			$type_option = get_option( 'customizer_social_icons_type_setting', $this->configs['type'] );
+			$html = sprintf( $this->configs['html'][ $type_option ], $size, $icon );
 
 			return $html;
 		}
@@ -676,6 +798,8 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 		 */
 		public function wp_nav_menu_objects( $sorted_menu_items, $args ) {
 
+			$hide_text_option = get_option( 'customizer_social_icons_hide_text_setting', $this->configs['hide-text'] );
+
 			foreach ( $sorted_menu_items as &$item ) {
 
 				// Skip submenu items.
@@ -684,14 +808,16 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 				}
 
 				foreach ( $this->configs['networks'] as $url => $network ) {
-
 					if ( false !== strpos( $item->url, $url ) ) {
 						$item->classes[] = $this->configs['li_class'];
 						$item->classes[] = $network['class'];
-
-						if ( $this->configs['hide-text'] ) {
-							$html = "<span class='screen-reader-text'>{$item->title}</span>";
-							$item->title = apply_filters( 'boldgrid_icon_title_html', $html, $item->title );
+						// Default display is to hide link text.
+						
+						// Add markup for shown text.
+						if ( $hide_text_option ) {
+							$item->title = sprintf( $this->configs['html']['hide-text'], $item->title );
+						} else {
+							$item->title = sprintf( $this->configs['html']['show-text'], $item->title );
 						}
 
 						$item->title = $this->get_icon( $network ) . $item->title ;
@@ -836,6 +962,81 @@ if ( ! class_exists( 'Customizer_Social_Icons' ) ) :
 				</div>
 			</script>
 		<?php
+		}
+
+		/**
+		 * Get Icon Size From Config
+		 *
+		 * @since 1.0.0
+		 * @access private
+		 *
+		 * @param    string   $size_theme  Theme Mod to Conver 
+		 * @return   string   $fa_size     Font Awesome size from numerical value.
+		 */
+		private function get_icon_size( $icon_size_config = null ) {
+			$icon_size_config = $this->configs['size'];
+			
+			switch ( $icon_size_config ) {
+				case 'normal':
+					$icon_size = 1;
+					break;
+				case 'large':
+					$icon_size = 2;
+					break;
+				case '2x':
+					$icon_size = 3;
+					break;
+				case '3x':
+					$icon_size = 4;
+					break;
+				case '4x':
+					$icon_size = 5;
+					break;
+				case '5x':
+					$icon_size = 6;
+					break;
+				default:
+					$icon_size = 1;
+			}
+
+			return $icon_size;
+		}
+
+		/**
+		 * Get Icon Class returned when provided an integer.
+		 *
+		 * @since 1.0.0
+		 * @access private
+		 *
+		 * @param    integer  $icon     The icon size value to convert to string.
+		 *
+		 * @return   string   $fa_size  Font Awesome size from numerical value.
+		 */
+		private function get_icon_class( $icon ) {			
+			switch ( $icon ) {
+				case 1:
+					$icon_size = 'normal';
+					break;
+				case 2:
+					$icon_size = 'large';
+					break;
+				case 3:
+					$icon_size = '2x';
+					break;
+				case 4:
+					$icon_size = '3x';
+					break;
+				case 5:
+					$icon_size = '4x';
+					break;
+				case 6:
+					$icon_size = '5x';
+					break;
+				default:
+					$icon_size = 'normal';
+			}
+
+			return $icon_size;
 		}
 	}
 endif;
