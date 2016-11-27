@@ -11,6 +11,7 @@ return array(
 	'js_path' => $base_path . '/assets/js',
 	'js_url' => $base_url . '/assets/js',
 	'plugin_name' => $plugin,
+	'prefix' => str_replace( '-', '_', $plugin ) . '_',
 	'hide-text'   => true,
 	'size'        => '2x',
 	'type'        => 'icon',

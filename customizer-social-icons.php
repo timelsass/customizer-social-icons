@@ -30,4 +30,5 @@
 // Include the autoloader
 include_once wp_normalize_path( plugin_dir_path( __FILE__ ) . '/autoload.php' );
 
-new Customizer_Social_Icons();
+$customizer_social_icons = new Customizer_Social_Icons();
+$customizer_social_icons->run();
