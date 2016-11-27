@@ -27,6 +27,7 @@
  *
  * @package CustomizerSocialIcons
  */
+// Include the autoloader
+include_once wp_normalize_path( plugin_dir_path( __FILE__ ) . '/autoload.php' );
 
-require_once __DIR__ . '/class-customizer-social-icons.php';
 new Customizer_Social_Icons();
