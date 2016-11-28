@@ -13,27 +13,65 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 	var self = CustomizerSocialIcons.LivePreview;
 
 	/**
+	 * Get hover color.
+	 */
+	self.hoverColor = parent.wp.customize('customizer_social_icons_hover_color_setting')();
+
+	/**
+	 * Get current color.
+	 */
+	self.currentColor = parent.wp.customize('customizer_social_icons_color_setting')();
+
+	/**
 	 * Initialize Social Media Icon Controls.
 	 *
-	 * @since 1.1.0 
+	 * @since 0.1
 	 */
 	self.initialize = function() {
 		self.iconSize();
 		self.iconText();
+		self.iconColor();
+		self.iconHoverColor();
 		self.iconSpacing();
+
+	};
+
+	/**
+	 * Listen for hover.
+	 *
+	 * @since 0.3
+	 */
+	self.hover = function() {
+		var $icons, $stack, $openStack, selector, currentColor;
+		// Define selector for stacks or standard icons.
+		$icons = $( '.menu-social a' );
+		$stack = $( '.menu-social' ).find( 'span.fa-stack' ).parent( 'a' );
+		$openStack = $( '.menu-social' ).find( 'span.stack-open' ).parent( 'a' );
+		selector = $icons;
+		if ( $stack.length ) selector = $stack;
+		if ( $openStack.length ) selector = $openStack;
+		selector.hover(
+			function( e ) {
+				// Set hover color.
+				$( e.currentTarget ).find( 'i.fa' ).css( 'color', self.hoverColor );
+			},
+			function( e ) {
+				// Reassign to the current color.
+				$( e.currentTarget ).find( 'i.fa' ).css( 'color', self.currentColor );
+			}
+		);
 	};
 
 	/**
 	 * Adjust Social Media Icon Size.
 	 *
-	 * @since 1.1.0 
+	 * @since 0.2
 	 */
 	self.iconSize = function() {
 		// Set logo letter spacing on site title text live
 		api( 'customizer_social_icons_size_setting', function( value ) {
 			value.bind( function( to ) {
 				var $icons, $stack, selector;
-
 				// Define selector for stacks or standard icons.
 				$icons = $( '.menu-social' ).find( 'i.fa' );
 				$stack = $( '.menu-social' ).find( 'span.fa-stack' );
@@ -57,7 +95,7 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 	/**
 	 * Hide or Show Social Media Icon Text.
 	 *
-	 * @since 1.1.0 
+	 * @since 0.2
 	 */
 	self.iconText = function() {
 		// Display or Hide the Social Media Icon Descriptive Text
@@ -81,9 +119,48 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 	};
 
 	/**
+	 * Adjust Social Media Icon Color.
+	 *
+	 * @since 0.3
+	 */
+	self.iconColor = function() {
+		// Set logo letter spacing on site title text live
+		api( 'customizer_social_icons_color_setting', function( value ) {
+			value.bind( function( to ) {
+				self.currentColor = to;
+				var $icons, $stack, selector;
+				// Define selector for stacks or standard icons.
+				$icons = $( '.menu-social' ).find( 'i.fa' );
+				$stack = $( '.menu-social' ).find( 'span.fa-stack' );
+				selector = $icons;
+				//if ( $stack.length ) selector = $stack;
+				// Add color to selector.
+				selector.css( 'color', to );
+				self.hover();
+			} );
+		} );
+	};
+
+	/**
+	 * Adjust Social Media Icon Hover Color.
+	 *
+	 * @since 0.3
+	 */
+	self.iconHoverColor = function() {
+		// Set logo letter spacing on site title text live
+		api( 'customizer_social_icons_hover_color_setting', function( value ) {
+			value.bind( function( to ) {
+				// Update hover color.
+				self.hoverColor = to;
+				self.hover();
+			} );
+		} );
+	};
+
+	/**
 	 * Adjust Social Media Icon Spacing.
 	 *
-	 * @since 1.1.0 
+	 * @since 0.2
 	 */
 	self.iconSpacing = function() {
 		// Adjust spacing of social media icon menus.

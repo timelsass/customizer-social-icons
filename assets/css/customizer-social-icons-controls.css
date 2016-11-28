@@ -1,0 +1,55 @@
+#accordion-section-customizer_social_icons_section .wp-picker-container {
+	width: 100%;
+}
+#accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result {
+	width: auto;
+	display: block;
+	border: none;
+	padding-left: 50px;
+}
+#accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result:after {
+	background: rgba(0, 0, 0, 0.25);
+	color: #fff;
+	border: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+#accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result:focus:after,
+#accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result:hover:after {
+	color: #fff;
+}
+
+#accordion-section-customizer_social_icons_section input[type="range"]{
+	-webkit-appearance: none;
+	width: 100%;
+	height: 20px;
+	background: linear-gradient(to right, #e0e0e0 0%, #e0e0e0 100%);
+	background-size: 100% 10px;
+	background-position: center;
+	background-repeat: no-repeat;
+	cursor: ew-resize;
+	overflow: hidden;
+	outline: none;
+}
+#accordion-section-customizer_social_icons_section input[type="range"]::-webkit-slider-thumb{
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	background: #F26B5E;
+	position: relative;
+	z-index: 3;
+	box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+	cursor: ew-resize;
+}
+#accordion-section-customizer_social_icons_section input[type="range"]::-webkit-slider-thumb:after{
+	content:" ";
+	width: 100%;
+	height: 10px;
+	position: absolute;
+	z-index: 1;
+	right: 20px;
+	top: 5px;
+	background: #ff5b32;
+	background: linear-gradient(to right, #f088fc 1%, #AC6CFF 70%);
+	cursor: ew-resize;
+}

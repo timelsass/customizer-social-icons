@@ -74,7 +74,7 @@ class Customizer_Social_Icons {
 
 	private function customizer() {
 		$customizer = new Customizer_Social_Icons_Customizer( $this->configs );
-		$this->loader->add_action( 'customize_controls_enqueue_scripts', $customizer, 'enqueue' );
+		$this->loader->add_action( 'customize_controls_print_styles', $customizer, 'enqueue' );
 		$this->loader->add_action( 'customize_preview_init', $customizer, 'live_preview' );
 		$this->loader->add_action( 'customize_register', $customizer, 'add_controls' );
 		$this->loader->add_action( 'wp_head', $customizer, 'icon_spacing_css' );
@@ -90,7 +90,6 @@ class Customizer_Social_Icons {
 		$this->loader->add_filter( 'customize_nav_menu_searched_items', $customizer_menus, 'searched_items', 10, 2 );
 		// Adds the FA icons into the social_icon type browser in customizer.
 		$this->loader->add_action( 'customize_controls_enqueue_scripts', $customizer_menus, 'add_fa_styles' );
-
 		// Remove current available items type template.
 		add_action( 'customize_register', function( $wp_customize ) {
 			remove_action( 'customize_controls_print_footer_scripts', array( $wp_customize->nav_menus, 'print_templates' ) );

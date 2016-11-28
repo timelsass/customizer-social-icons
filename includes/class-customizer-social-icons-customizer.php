@@ -48,6 +48,13 @@ class Customizer_Social_Icons_Customizer {
 			array(),
 			'4.5.0'
 		);
+		// Control specific css.
+		wp_enqueue_style(
+			"{$this->configs['plugin_name']}-controls",
+			trailingslashit( $this->configs['css_url'] ) . "{$this->configs['plugin_name']}-controls.css",
+			array(),
+			$this->configs['version']
+		);
 	}
 
 	/**
@@ -60,10 +67,10 @@ class Customizer_Social_Icons_Customizer {
 	 */
 	public function live_preview() {
 		wp_enqueue_script(
-			$this->configs['plugin_name'] . '-live-preview',
+			"{$this->configs['plugin_name']}-live-preview",
 			trailingslashit( $this->configs['js_url'] ) . $this->configs['plugin_name'] . '-live-preview.js',
 			array( 'jquery', 'customize-preview' ),
-			'1.0.0'
+			$this->configs['version']
 		);
 	}
 
@@ -80,6 +87,8 @@ class Customizer_Social_Icons_Customizer {
 		self::icon_style( $wp_customize );
 		self::icon_size( $wp_customize );
 		self::icon_spacing( $wp_customize );
+		self::icon_color( $wp_customize );
+		self::icon_hover_color( $wp_customize );
 		self::icon_hide_text( $wp_customize );
 	}
 
@@ -222,9 +231,22 @@ class Customizer_Social_Icons_Customizer {
 	public function icon_spacing_css() {
 		$option = get_option( "{$this->configs['prefix']}spacing_setting", 0 );
 		$val = ( $option / 2 ) . 'px';
+		$color = get_option( "{$this->configs['prefix']}color_setting", '#fff' );
+		$hover_color = get_option( "{$this->configs['prefix']}hover_color_setting", '#fff' );
 		$css = '<style type="text/css" id="icon-spacing-css">';
 		$css .=
-		".menu-social a>i.fa,
+		"
+		.menu-social span.stack-open,
+		.menu-social a>i.fa {
+			color: {$color};
+		}
+		.menu-social a:hover > .stack-open i.fa,
+		.menu-social a:focus > .stack-open i.fa,
+		.menu-social a:hover > i.fa,
+		.menu-social a:focus > i.fa {
+			color: {$hover_color};
+		}
+		.menu-social a>i.fa,
 		.menu-social span.fa-stack {
 			margin-right: {$val};
 			margin-left: {$val};
@@ -242,6 +264,50 @@ class Customizer_Social_Icons_Customizer {
 		$css .= '</style>';
 
 		echo $css;
+	}
+
+	private function icon_color( $wp_customize ) {
+		$wp_customize->add_setting(
+			"{$this->configs['prefix']}color_setting",
+			array(
+				'default'  => '#fff',
+				'type'      => 'option',
+				'transport' => 'postMessage',
+			)
+		);
+		$wp_customize->add_control(
+			new WP_Customize_Color_Control(
+				$wp_customize,
+				"{$this->configs['prefix']}color",
+				array(
+					'label'        => __( 'Color' ),
+					'section'    => "{$this->configs['prefix']}section",
+					'settings'   => "{$this->configs['prefix']}color_setting",
+				)
+			)
+		);
+	}
+
+	private function icon_hover_color( $wp_customize ) {
+		$wp_customize->add_setting(
+			"{$this->configs['prefix']}hover_color_setting",
+			array(
+				'default'  => '#fff',
+				'type'      => 'option',
+				'transport' => 'postMessage',
+			)
+		);
+		$wp_customize->add_control(
+			new WP_Customize_Color_Control(
+				$wp_customize,
+				"{$this->configs['prefix']}hover_color",
+				array(
+					'label'        => __( 'Hover Color' ),
+					'section'    => "{$this->configs['prefix']}section",
+					'settings'   => "{$this->configs['prefix']}hover_color_setting",
+				)
+			)
+		);
 	}
 
 	/**
