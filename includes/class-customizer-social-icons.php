@@ -89,7 +89,7 @@ class Customizer_Social_Icons {
 		// Allow social icons to be searchable in panel.
 		$this->loader->add_filter( 'customize_nav_menu_searched_items', $customizer_menus, 'searched_items', 10, 2 );
 		// Adds the FA icons into the social_icon type browser in customizer.
-		$this->loader->add_action( 'customize_controls_enqueue_scripts', $customizer_menus, 'add_fa_styles' );
+		$this->loader->add_action( 'customize_controls_print_styles', $customizer_menus, 'add_fa_styles' );
 		// Remove current available items type template.
 		add_action( 'customize_register', function( $wp_customize ) {
 			remove_action( 'customize_controls_print_footer_scripts', array( $wp_customize->nav_menus, 'print_templates' ) );
