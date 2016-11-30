@@ -322,7 +322,7 @@ class Customizer_Social_Icons_Customizer {
 		$wp_customize->add_setting(
 			"{$this->configs['prefix']}hide_text_setting",
 			array(
-				'default'  => false,
+				'default'  => true,
 				'type'      => 'option',
 				'transport' => 'postMessage',
 			)
