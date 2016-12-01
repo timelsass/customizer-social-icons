@@ -12,15 +12,10 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 	CustomizerSocialIcons.LivePreview = {};
 	var self = CustomizerSocialIcons.LivePreview;
 
-	/**
-	 * Get hover color.
-	 */
-	self.hoverColor = parent.wp.customize('customizer_social_icons_hover_color_setting')();
-
-	/**
-	 * Get current color.
-	 */
-	self.currentColor = parent.wp.customize('customizer_social_icons_color_setting')();
+	self.configs = {
+		hoverColor : parent.wp.customize('customizer_social_icons_hover_color_setting')(),
+		currentColor : parent.wp.customize('customizer_social_icons_color_setting')(),
+	};
 
 	/**
 	 * Initialize Social Media Icon Controls.
@@ -53,11 +48,11 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 		selector.hover(
 			function( e ) {
 				// Set hover color.
-				$( e.currentTarget ).find( 'i.fa' ).css( 'color', self.hoverColor );
+				$( e.currentTarget ).find( 'i.fa' ).css( 'color', self.configs.hoverColor );
 			},
 			function( e ) {
 				// Reassign to the current color.
-				$( e.currentTarget ).find( 'i.fa' ).css( 'color', self.currentColor );
+				$( e.currentTarget ).find( 'i.fa' ).css( 'color', self.configs.currentColor );
 			}
 		);
 	};
@@ -127,7 +122,7 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 		// Set logo letter spacing on site title text live
 		api( 'customizer_social_icons_color_setting', function( value ) {
 			value.bind( function( to ) {
-				self.currentColor = to;
+				self.configs.currentColor = to;
 				var $icons, $stack, selector;
 				// Define selector for stacks or standard icons.
 				$icons = $( '.menu-social' ).find( 'i.fa' );
@@ -151,7 +146,7 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 		api( 'customizer_social_icons_hover_color_setting', function( value ) {
 			value.bind( function( to ) {
 				// Update hover color.
-				self.hoverColor = to;
+				self.configs.hoverColor = to;
 				self.hover();
 			} );
 		} );
