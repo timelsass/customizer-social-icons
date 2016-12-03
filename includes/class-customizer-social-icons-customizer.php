@@ -57,6 +57,15 @@ class Customizer_Social_Icons_Customizer {
 		);
 	}
 
+	public function display_colors() {
+		wp_enqueue_script(
+			"{$this->configs['plugin_name']}-display-colors",
+			trailingslashit( $this->configs['js_url'] ) . $this->configs['plugin_name'] . '-display-colors.js',
+			array( 'jquery', 'customize-controls' ),
+			$this->configs['version']
+		);
+	}
+
 	/**
 	 * Enqueues scripts and styles used in the customizer.
 	 *
@@ -88,6 +97,7 @@ class Customizer_Social_Icons_Customizer {
 		self::icon_size( $wp_customize );
 		self::icon_spacing( $wp_customize );
 		self::icon_color( $wp_customize );
+		self::icon_color_secondary( $wp_customize );
 		self::icon_hover_color( $wp_customize );
 		self::icon_hide_text( $wp_customize );
 	}
@@ -283,6 +293,28 @@ class Customizer_Social_Icons_Customizer {
 					'label'        => __( 'Color' ),
 					'section'    => "{$this->configs['prefix']}section",
 					'settings'   => "{$this->configs['prefix']}color_setting",
+				)
+			)
+		);
+	}
+
+	private function icon_color_secondary( $wp_customize ) {
+		$wp_customize->add_setting(
+			"{$this->configs['prefix']}color_secondary_setting",
+			array(
+				'default'  => '#fff',
+				'type'      => 'option',
+				'transport' => 'postMessage',
+			)
+		);
+		$wp_customize->add_control(
+			new WP_Customize_Color_Control(
+				$wp_customize,
+				"{$this->configs['prefix']}color_secondary",
+				array(
+					'label'        => __( 'Background Color' ),
+					'section'    => "{$this->configs['prefix']}section",
+					'settings'   => "{$this->configs['prefix']}color_secondary_setting",
 				)
 			)
 		);

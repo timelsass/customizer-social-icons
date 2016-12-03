@@ -68,7 +68,7 @@ class Customizer_Social_Icons {
 	private function menus() {
 		$menus = new Customizer_Social_Icons_Menus( $this->configs );
 		// Filters navs and replaces menu items with our FA markup.
-		$this->loader->add_filter( 'wp_nav_menu_objects', $menus, 'wp_nav_menu_objects', 5, 2 );
+		$this->loader->add_filter( 'wp_nav_menu_objects', $menus, 'wp_nav_menu_objects', 5, 2, 999 );
 		$this->loader->add_action( 'wp_enqueue_scripts', $menus, 'enqueue' );
 	}
 
@@ -76,6 +76,7 @@ class Customizer_Social_Icons {
 		$customizer = new Customizer_Social_Icons_Customizer( $this->configs );
 		$this->loader->add_action( 'customize_controls_print_styles', $customizer, 'enqueue' );
 		$this->loader->add_action( 'customize_preview_init', $customizer, 'live_preview' );
+		$this->loader->add_action( 'customize_controls_print_footer_scripts', $customizer, 'display_colors' );
 		$this->loader->add_action( 'customize_register', $customizer, 'add_controls' );
 		$this->loader->add_action( 'wp_head', $customizer, 'icon_spacing_css' );
 	}

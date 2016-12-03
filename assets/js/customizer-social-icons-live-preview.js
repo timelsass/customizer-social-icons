@@ -12,10 +12,6 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 	CustomizerSocialIcons.LivePreview = {};
 	var self = CustomizerSocialIcons.LivePreview;
 
-	self.configs = {
-		hoverColor : parent.wp.customize('customizer_social_icons_hover_color_setting')(),
-		currentColor : parent.wp.customize('customizer_social_icons_color_setting')(),
-	};
 
 	/**
 	 * Initialize Social Media Icon Controls.
@@ -23,12 +19,27 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 	 * @since 0.1
 	 */
 	self.initialize = function() {
+		$( document ).ready( self.onReady );
 		self.iconSize();
 		self.iconText();
 		self.iconColor();
 		self.iconHoverColor();
 		self.iconSpacing();
 
+	};
+
+	self.onReady = function() {
+		self.getSettings();
+	};
+
+	self.getSettings = function() {
+		wp.customize.bind( 'ready', _.defer( function() {
+			self.configs = {
+				iconStyle : api( 'customizer_social_icons_type_setting' )(),
+				hoverColor : api( 'customizer_social_icons_hover_color_setting' )(),
+				currentColor : api( 'customizer_social_icons_color_setting' )(),
+			};
+		} ) );
 	};
 
 	/**
@@ -123,10 +134,16 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 		api( 'customizer_social_icons_color_setting', function( value ) {
 			value.bind( function( to ) {
 				self.configs.currentColor = to;
-				var $icons, $stack, selector;
+				var $icons = self.settings.iconStyle, selector;
+				if ( $icons === 'icon' ) {
+					selector = $( '.menu-social' ).find( 'i.fa' );
+				} else if ( $icons === 'icon-square' || $icons === 'icon-circle' ) {
+					selector = $( '.menu-social' ).find( 'span.fa-stack' );
+				} else {
+					selector = $( '.menu-social' ).find( 'span.fa-stack' );
+				}
 				// Define selector for stacks or standard icons.
 				$icons = $( '.menu-social' ).find( 'i.fa' );
-				$stack = $( '.menu-social' ).find( 'span.fa-stack' );
 				selector = $icons;
 				//if ( $stack.length ) selector = $stack;
 				// Add color to selector.
