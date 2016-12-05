@@ -99,6 +99,7 @@ class Customizer_Social_Icons_Customizer {
 		self::icon_color( $wp_customize );
 		self::icon_color_secondary( $wp_customize );
 		self::icon_hover_color( $wp_customize );
+		self::icon_hover_color_secondary( $wp_customize );
 		self::icon_hide_text( $wp_customize );
 	}
 
@@ -337,6 +338,28 @@ class Customizer_Social_Icons_Customizer {
 					'label'        => __( 'Hover Color' ),
 					'section'    => "{$this->configs['prefix']}section",
 					'settings'   => "{$this->configs['prefix']}hover_color_setting",
+				)
+			)
+		);
+	}
+
+	private function icon_hover_color_secondary( $wp_customize ) {
+		$wp_customize->add_setting(
+			"{$this->configs['prefix']}hover_color_secondary_setting",
+			array(
+				'default'  => '#fff',
+				'type'      => 'option',
+				'transport' => 'postMessage',
+			)
+		);
+		$wp_customize->add_control(
+			new WP_Customize_Color_Control(
+				$wp_customize,
+				"{$this->configs['prefix']}hover_color_secondary",
+				array(
+					'label'        => __( 'Background Hover Color' ),
+					'section'    => "{$this->configs['prefix']}section",
+					'settings'   => "{$this->configs['prefix']}hover_color_secondary_setting",
 				)
 			)
 		);

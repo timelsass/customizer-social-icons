@@ -23,6 +23,7 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 		self.iconSize();
 		self.iconText();
 		self.iconColor();
+		self.iconColorSecondary();
 		self.iconHoverColor();
 		self.iconSpacing();
 
@@ -38,6 +39,7 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 				iconStyle : api( 'customizer_social_icons_type_setting' )(),
 				hoverColor : api( 'customizer_social_icons_hover_color_setting' )(),
 				currentColor : api( 'customizer_social_icons_color_setting' )(),
+				currentColorSecondary : api( 'customizer_social_icons_color_secondary_setting' )(),
 			};
 		} ) );
 	};
@@ -48,13 +50,27 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 	 * @since 0.3
 	 */
 	self.hover = function() {
+		$( '.menu-social' );
 		var $icons, $stack, $openStack, selector, currentColor;
 		// Define selector for stacks or standard icons.
 		$icons = $( '.menu-social a' );
-		$stack = $( '.menu-social' ).find( 'span.fa-stack' ).parent( 'a' );
+		$stack = $( '.menu-social' ).find( 'span.stack-closed' ).parent( 'a' );
 		$openStack = $( '.menu-social' ).find( 'span.stack-open' ).parent( 'a' );
+		if ( $stack.length ) {
+			selector = $stack;
+			selector.hover(
+				function( e ) {
+					// Set hover color.
+					$( e.currentTarget ).find( '.fa-inverse' ).css( 'color', self.configs.hoverColor );
+				},
+				function( e ) {
+					// Reassign to the current secondary color.
+					$( e.currentTarget ).find( '.fa-inverse' ).css( 'color', self.configs.currentColor );
+				}
+			);
+			return;
+		}
 		selector = $icons;
-		if ( $stack.length ) selector = $stack;
 		if ( $openStack.length ) selector = $openStack;
 		selector.hover(
 			function( e ) {
@@ -134,18 +150,31 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 		api( 'customizer_social_icons_color_setting', function( value ) {
 			value.bind( function( to ) {
 				self.configs.currentColor = to;
-				var $icons = self.settings.iconStyle, selector;
+				var $icons = self.configs.iconStyle, selector;
+
 				if ( $icons === 'icon' ) {
 					selector = $( '.menu-social' ).find( 'i.fa' );
 				} else if ( $icons === 'icon-square' || $icons === 'icon-circle' ) {
-					selector = $( '.menu-social' ).find( 'span.fa-stack' );
+					selector = $( '.menu-social' ).find( 'span.stack-closed > .fa-inverse' );
 				} else {
 					selector = $( '.menu-social' ).find( 'span.fa-stack' );
 				}
-				// Define selector for stacks or standard icons.
-				$icons = $( '.menu-social' ).find( 'i.fa' );
-				selector = $icons;
-				//if ( $stack.length ) selector = $stack;
+
+				// Add color to selector.
+				selector.css( 'color', to );
+				self.hover();
+			} );
+		} );
+	};
+
+	self.iconColorSecondary = function() {
+		// Set logo letter spacing on site title text live
+		api( 'customizer_social_icons_color_secondary_setting', function( value ) {
+			value.bind( function( to ) {
+				self.configs.currentColorSecondary = to;
+				var $icons = self.configs.iconStyle, selector;
+				selector = $( '.menu-social' ).find( 'span.stack-closed > i.fa:not(.fa-inverse)' );
+
 				// Add color to selector.
 				selector.css( 'color', to );
 				self.hover();
