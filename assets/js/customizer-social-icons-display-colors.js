@@ -26,24 +26,29 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 	};
 
 	self.displayColors = function() {
-		var iconStyle, secondaryColor;
+		var iconStyle, secondaryColor, secondaryHoverColor;
 
 		iconStyle = $( '#customize-control-customizer_social_icons_type select' );
 		secondaryColor = $( '#customize-control-customizer_social_icons_color_secondary' );
+		secondaryHoverColor = $( '#customize-control-customizer_social_icons_hover_color_secondary' );
 
 		/* on page load, hide or show adv. option */
 		if ( iconStyle.val() === 'icon-circle' || iconStyle.val() === 'icon-square' ) {
 			secondaryColor.show();
+			secondaryHoverColor.show();
 		} else {
 			secondaryColor.hide();
+			secondaryHoverColor.hide();
 		}
 
 		/* On change, hide or show secondary color options when appropriate */
 		iconStyle.change( function() {
 			if ( $( this ).val() === 'icon-circle' || $( this ).val() === 'icon-square' ) {
 				secondaryColor.show();
+				secondaryHoverColor.show();
 			} else {
 				secondaryColor.hide();
+				secondaryHoverColor.hide();
 			}
 		});
 	};

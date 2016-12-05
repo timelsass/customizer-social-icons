@@ -25,6 +25,7 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 		self.iconColor();
 		self.iconColorSecondary();
 		self.iconHoverColor();
+		self.iconHoverColorSecondary();
 		self.iconSpacing();
 
 	};
@@ -38,6 +39,7 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 			self.configs = {
 				iconStyle : api( 'customizer_social_icons_type_setting' )(),
 				hoverColor : api( 'customizer_social_icons_hover_color_setting' )(),
+				hoverColorSecondary : api( 'customizer_social_icons_hover_color_secondary_setting' )(),
 				currentColor : api( 'customizer_social_icons_color_setting' )(),
 				currentColorSecondary : api( 'customizer_social_icons_color_secondary_setting' )(),
 			};
@@ -62,10 +64,14 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 				function( e ) {
 					// Set hover color.
 					$( e.currentTarget ).find( '.fa-inverse' ).css( 'color', self.configs.hoverColor );
+					// Set hover color.
+					$( e.currentTarget ).find( 'i.fa:first-child' ).css( 'color', self.configs.hoverColorSecondary );
 				},
 				function( e ) {
 					// Reassign to the current secondary color.
 					$( e.currentTarget ).find( '.fa-inverse' ).css( 'color', self.configs.currentColor );
+					// Set hover color.
+					$( e.currentTarget ).find( 'i.fa:first-child' ).css( 'color', self.configs.currentColorSecondary );
 				}
 			);
 			return;
@@ -193,6 +199,22 @@ var CustomizerSocialIcons = CustomizerSocialIcons || {};
 			value.bind( function( to ) {
 				// Update hover color.
 				self.configs.hoverColor = to;
+				self.hover();
+			} );
+		} );
+	};
+
+	/**
+	 * Adjust Social Media Icon Hover Color.
+	 *
+	 * @since 0.3
+	 */
+	self.iconHoverColorSecondary = function() {
+		// Set logo letter spacing on site title text live
+		api( 'customizer_social_icons_hover_color_secondary_setting', function( value ) {
+			value.bind( function( to ) {
+				// Update hover color.
+				self.configs.hoverColorSecondary = to;
 				self.hover();
 			} );
 		} );

@@ -244,18 +244,30 @@ class Customizer_Social_Icons_Customizer {
 		$val = ( $option / 2 ) . 'px';
 		$color = get_option( "{$this->configs['prefix']}color_setting", '#fff' );
 		$hover_color = get_option( "{$this->configs['prefix']}hover_color_setting", '#fff' );
+		$color_secondary = get_option( "{$this->configs['prefix']}color_secondary_setting", '#fff' );
+		$hover_color_secondary = get_option( "{$this->configs['prefix']}hover_color_secondary_setting", '#fff' );
 		$css = '<style type="text/css" id="icon-spacing-css">';
 		$css .=
 		"
+		.menu-social .stack-closed > i.fa-inverse,
 		.menu-social span.stack-open,
 		.menu-social a>i.fa {
 			color: {$color};
 		}
+		.menu-social a:hover > .stack-closed i.fa-inverse,
+		.menu-social a:focus > .stack-closed i.fa-inverse,
 		.menu-social a:hover > .stack-open i.fa,
 		.menu-social a:focus > .stack-open i.fa,
 		.menu-social a:hover > i.fa,
 		.menu-social a:focus > i.fa {
 			color: {$hover_color};
+		}
+		.menu-social .stack-closed > i.fa:first-child {
+			color: {$color_secondary};
+		}
+		.menu-social a:hover > .stack-closed i.fa:first-child,
+		.menu-social a:focus > .stack-closed i.fa:first-child {
+			color: {$hover_color_secondary};
 		}
 		.menu-social a>i.fa,
 		.menu-social span.fa-stack {
