@@ -116,6 +116,7 @@ You're ready to go!  Visit the WordPress Customizer, and start adding Social Med
 * New Feature: Added color selections for icons in customizer.
 * Update: Changed control styles to look more modern.
 * Update: Added and checked compatibility for WordPress 4.7.
+* Update: Classes now use autoloader, expanded configs.
 
 = 0.2 =
 * Cleaning up extraneous filters.  All filters should be handled by the single config filter now.
