@@ -1,12 +1,17 @@
+#sub-accordion-section-customizer_social_icons_section .wp-picker-container,
 #accordion-section-customizer_social_icons_section .wp-picker-container {
 	width: 100%;
 }
+
+#sub-accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result,
 #accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result {
 	width: auto;
 	display: block;
 	border: none;
 	padding-left: 50px;
 }
+
+#sub-accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result:after,
 #accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result:after {
 	background: rgba(0, 0, 0, 0.25);
 	color: #fff;
@@ -14,11 +19,15 @@
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
+
+#sub-accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result:focus:after,
 #accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result:focus:after,
+#sub-accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result:hover:after,
 #accordion-section-customizer_social_icons_section .wp-picker-container a.wp-color-result:hover:after {
 	color: #fff;
 }
 
+#sub-accordion-section-customizer_social_icons_section input[type="range"],
 #accordion-section-customizer_social_icons_section input[type="range"]{
 	-webkit-appearance: none;
 	width: 100%;
@@ -31,6 +40,7 @@
 	overflow: hidden;
 	outline: none;
 }
+#sub-accordion-section-customizer_social_icons_section input[type="range"]::-webkit-slider-thumb,
 #accordion-section-customizer_social_icons_section input[type="range"]::-webkit-slider-thumb{
 	-webkit-appearance: none;
 	width: 20px;
@@ -41,6 +51,7 @@
 	box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
 	cursor: ew-resize;
 }
+#sub-accordion-section-customizer_social_icons_section input[type="range"]::-webkit-slider-thumb:after,
 #accordion-section-customizer_social_icons_section input[type="range"]::-webkit-slider-thumb:after{
 	content:" ";
 	width: 100%;

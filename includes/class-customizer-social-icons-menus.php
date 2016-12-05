@@ -116,7 +116,6 @@ class Customizer_Social_Icons_Menus {
 			}
 		}
 
-
 		return $sorted_menu_items;
 	}
 }
