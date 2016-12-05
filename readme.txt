@@ -108,6 +108,7 @@ You're ready to go!  Visit the WordPress Customizer, and start adding Social Med
 4. **Social Icon Appearance Controls** - You can manage how your social media icons appear in your website with the customizer controls.
 5. **Social Icon Styles** - Various Icon Styles are available to make the icons fit better with your overall design.
 6. **Social Icon Sizes** - You can change the size of your social icons right in the customizer to give a different look to your chosen icons.
+7. **Social Icon Colors** - Colors can be changed for your social icons in the WordPress customizer controls as well.
 
 == Changelog ==
 
