@@ -307,7 +307,7 @@ return array(
 	'weibo.com' => array(
 		'name' => 'Weibo',
 		'class' => 'weibo',
-		'icon' => 'fa fa-eibo',
+		'icon' => 'fa fa-weibo',
 		'icon-sign' => 'fa fa-weibo',
 		'icon-square-open' => 'fa fa-eibo fa-stack-1x',
 		'icon-square' => 'fa fa-eibo fa-stack-1x',
