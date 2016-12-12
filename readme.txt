@@ -112,6 +112,9 @@ You're ready to go!  Visit the WordPress Customizer, and start adding Social Med
 
 == Changelog ==
 
+= 0.4 =
+* Bug fix: Fixed typo in icon type icon for weibo causing it not to display.
+
 = 0.3 =
 * New Feature: Added color selections for icons in customizer.
 * Update: Changed control styles to look more modern.
