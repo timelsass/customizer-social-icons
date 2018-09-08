@@ -3,8 +3,8 @@ Contributors: timph
 Donate link: https://paypal.me/timph
 Tags: customizer, social media icons, social icons, social media, social, customize, customize social
 Requires at least: 4.3
-Tested up to: 4.7
-Stable tag: 0.3
+Tested up to: 4.9.8
+Stable tag: 0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
